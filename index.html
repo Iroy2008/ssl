@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap Local - Final Project</title>
+    <style>
+        /* Early 2000s / CS Student Project Aesthetic Styling */
+        body {
+            font-family: Arial, "Helvetica Neue", "Comic Sans MS", sans-serif;
+            background-color: #f0f4f8;
+            background-image: linear-gradient(#e1e8ed 1px, transparent 1px), linear-gradient(90deg, #e1e8ed 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #333333;
+            margin: 0;
+            padding: 15px;
+        }
+
+        /* Container box for main content */
+        .wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 3px double #003366;
+            padding: 20px;
+            box-shadow: 5px 5px 0px #888888;
+        }
+
+        /* Header area */
+        header {
+            background-color: #0055a5;
+            color: #ffffff;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #002244;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            text-shadow: 2px 2px #001122;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-style: italic;
+            font-size: 14px;
+            color: #ffff99;
+        }
+
+        /* Announcement banner */
+        .marquee-container {
+            background-color: #ffffcc;
+            border: 1px dashed #ff9900;
+            padding: 5px 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #cc0000;
+            font-size: 13px;
+        }
+
+        /* Time-Bank status panel */
+        .time-bank-box {
+            background-color: #e6f2ff;
+            border: 2px outset #66b2ff;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-bank-box h3 {
+            margin: 0;
+            color: #004080;
+            font-size: 16px;
+        }
+
+        .balance-badge {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-radius: 12px;
+            border: 1px solid #1e7e34;
+        }
+
+        /* Content layout sections */
+        .section-title {
+            background-color: #d9e2ec;
+            padding: 6px 10px;
+            border-left: 5px solid #0055a5;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        /* Search & Filter bar */
+        .filter-panel {
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .filter-panel input, .filter-panel select {
+            padding: 5px;
+            border: 1px solid #777;
+            font-size: 13px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+
+        /* Skill Grid / Cards */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .skill-card {
+            background: #fafafa;
+            border: 2px solid #b0c4de;
+            border-top: 4px solid #0055a5;
+            padding: 12px;
+            position: relative;
+        }
+
+        .skill-card h4 {
+            margin: 0 0 8px 0;
+            color: #003366;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+            font-size: 16px;
+        }
+
+        .skill-detail {
+            font-size: 13px;
+            margin: 5px 0;
+        }
+
+        .tag-offer {
+            color: #006600;
+            font-weight: bold;
+        }
+
+        .tag-want {
+            color: #cc0000;
+            font-weight: bold;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background-color: #eee;
+            border: 1px solid #bbb;
+            font-size: 10px;
+            padding: 2px 5px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Classic Retro Buttons */
+        .btn {
+            background-color: #e9e9e9;
+            border: 2px outset #ffffff;
+            color: #000;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .btn:active {
+            border-style: inset;
+        }
+
+        .btn-primary {
+            background-color: #0055a5;
+            color: white;
+            border: 2px outset #0077ee;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            border: 2px outset #34ce57;
+        }
+
+        /* Form styling */
+        .form-box {
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #888;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        /* Table view for statistics or summary */
+        table.status-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        table.status-table th, table.status-table td {
+            border: 1px solid #999;
+            padding: 6px;
+            text-align: left;
+        }
+
+        table.status-table th {
+            background-color: #e6e6e6;
+        }
+
+        /* Custom Simple Modal Popup */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background-color: #ffffff;
+            border: 3px outset #0055a5;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-weight: bold;
+            font-size: 16px;
+            color: #0055a5;
+            border-bottom: 2px solid #0055a5;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 11px;
+            color: #666666;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        /* Small responsive tweak */
+        @media (max-width: 600px) {
+            .wrapper {
+                padding: 10px;
+            }
+            .time-bank-box {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Header -->
+    <header>
+        <h1>SkillSwap Local</h1>
+        <p>"Swap Skills with Your Neighbors - No Money Needed!"</p>
+    </header>
+
+    <!-- Notice Board / Announcement Marquee -->
+    <div class="marquee-container">
+        <marquee scrollamount="4" behavior="scroll" direction="left">
+            📢 NOTICE: Welcome to our Computer Science Final Project Website! Next neighborhood swap meeting is on Saturday at 2:00 PM in Green Park!
+        </marquee>
+    </div>
+
+    <!-- Time Bank Dashboard Counter -->
+    <div class="time-bank-box">
+        <div>
+            <h3>⏱️ Your Local Time-Bank Account</h3>
+            <small style="color: #555;">Earn 1 hour credit for every hour of skill you share!</small>
+        </div>
+        <div>
+            <span>Your Balance: </span>
+            <span id="creditBalance" class="balance-badge">2 Hours</span>
+        </div>
+    </div>
+
+    <!-- Skill Search & Filter -->
+    <div class="section-title">🔍 Search & Filter Community Skills</div>
+    <div class="filter-panel">
+        <input type="text" id="searchInput" onkeyup="filterSkills()" placeholder="Search by name or skill (e.g., Guitar)...">
+        <select id="categoryFilter" onchange="filterSkills()">
+            <option value="ALL">-- All Categories --</option>
+            <option value="Music">Music & Arts</option>
+            <option value="Home & Garden">Home & Garden</option>
+            <option value="Academics">Academics & Language</option>
+            <option value="Tech">Tech & Computers</option>
+            <option value="Fitness">Fitness & Sports</option>
+        </select>
+        <button class="btn" onclick="resetFilters()">Reset Filters</button>
+    </div>
+
+    <!-- Skill Listing Cards -->
+    <div class="section-title">🤝 Available Neighbor Offers & Requests</div>
+    <div id="skillsContainer" class="skills-grid">
+        <!-- Cards injected dynamically via JS -->
+    </div>
+
+    <!-- Form Section -->
+    <div class="section-title">➕ Add Your Skill Offer or Request</div>
+    <div class="form-box">
+        <form id="addSkillForm" onsubmit="addNewSkill(event)">
+            <div class="form-group">
+                <label for="memberName">Your Full Name:</label>
+                <input type="text" id="memberName" required placeholder="e.g. John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="memberLocation">Neighborhood / Street Location:</label>
+                <input type="text" id="memberLocation" required placeholder="e.g. Oak Street, North Side">
+            </div>
+
+            <div class="form-group">
+                <label for="skillCategory">Skill Category:</label>
+                <select id="skillCategory" required>
+                    <option value="Music">Music & Arts</option>
+                    <option value="Home & Garden">Home & Garden</option>
+                    <option value="Academics">Academics & Language</option>
+                    <option value="Tech">Tech & Computers</option>
+                    <option value="Fitness">Fitness & Sports</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="skillOffer">Skill You OFFER (What can you teach or help with?):</label>
+                <input type="text" id="skillOffer" required placeholder="e.g. Basic Spanish Lessons">
+            </div>
+
+            <div class="form-group">
+                <label for="skillWant">Skill You NEED (What are you looking for?):</label>
+                <input type="text" id="skillWant" required placeholder="e.g. Bicycle Tire Repair">
+            </div>
+
+            <div class="form-group">
+                <label for="contactInfo">Contact Info (Phone or Email):</label>
+                <input type="text" id="contactInfo" required placeholder="e.g. john@email.com / 555-0192">
+            </div>
+
+            <button type="submit" class="btn btn-primary">➕ Post Skill to Notice Board</button>
+        </form>
+    </div>
+
+    <!-- Project Stats Table -->
+    <div class="section-title">📊 Community Skill Statistics</div>
+    <table class="status-table">
+        <thead>
+            <tr>
+                <th>Stat Metric</th>
+                <th>Current Count</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Active Local Neighbors</td>
+                <td id="statMembers">4 Neighbors</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>Total Swaps Completed</td>
+                <td id="statSwaps">12 Swaps</td>
+                <td>Growing!</td>
+            </tr>
+            <tr>
+                <td>System Version</td>
+                <td>v1.0 (CS101 Web Edition)</td>
+                <td>Online</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Footer -->
+    <footer>
+        <p>SkillSwap Local Project &copy; 2026 | Created using HTML, CSS, and JavaScript</p>
+        <p style="color: #888;">Designed for local neighborhood skill exchange without currency.</p>
+    </footer>
+</div>
+
+<!-- Interactive Request Modal Dialog -->
+<div id="swapModal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">📩 Request Skill Swap</div>
+        <p id="modalRecipientText" style="font-size: 13px; font-weight: bold;"></p>
+        <p style="font-size: 12px; color: #555;">An automated exchange proposal will be logged into the project system for this neighborhood swap.</p>
+        
+        <div class="form-group">
+            <label for="modalMessage" style="font-size: 12px;">Your Message / Preferred Time:</label>
+            <textarea id="modalMessage" rows="3" placeholder="Hi! I saw your offer and I am interested..."></textarea>
+        </div>
+
+        <div style="text-align: right;">
+            <button class="btn" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-success" onclick="confirmSwapRequest()">Send Request!</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initial sample community skills dataset
+    let skillsData = [
+        {
+            id: 1,
+            name: "Dave Miller",
+            location: "Pine Street",
+            category: "Music",
+            offer: "Acoustic Guitar Lessons for Beginners",
+            want: "Bike Repair / Chain Tuning",
+            contact: "dave.m@example.com"
+        },
+        {
+            id: 2,
+            name: "Sarah Jenkins",
+            location: "Maple Avenue",
+            category: "Home & Garden",
+            offer: "Organic Vegetable Gardening Tips",
+            want: "High School Math / Algebra Tutoring",
+            contact: "sarah_j@example.com"
+        },
+        {
+            id: 3,
+            name: "Uncle Bob",
+            location: "Elm Street",
+            category: "Tech",
+            offer: "PC Virus Removal & Windows Setup",
+            want: "Sourdough Bread Baking Lessons",
+            contact: "555-0143"
+        },
+        {
+            id: 4,
+            name: "Maria Garcia",
+            location: "5th Street",
+            category: "Academics",
+            offer: "Conversational Spanish Practice",
+            want: "Basic Lawn Mowing & Trimming",
+            contact: "maria.g@example.com"
+        }
+    ];
+
+    let userBalance = 2; // Time credits counter
+    let activeSwapTarget = null;
+    let totalSwapsCompleted = 12;
+
+    // Load initial listings on screen load
+    window.onload = function() {
+        renderSkills(skillsData);
+        updateStats();
+    };
+
+    // Render cards function
+    function renderSkills(list) {
+        const container = document.getElementById('skillsContainer');
+        container.innerHTML = '';
+
+        if (list.length === 0) {
+            container.innerHTML = '<div style="grid-column: 1/-1; padding: 15px; background:#fff; border: 1px solid #ccc; text-align:center;">No matching skill postings found!</div>';
+            return;
+        }
+
+        list.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'skill-card';
+            card.innerHTML = `
+                <h4>👤 ${escapeHTML(item.name)}</h4>
+                <div class="skill-detail">📍 <b>Location:</b> ${escapeHTML(item.location)}</div>
+                <div class="skill-detail tag-offer">🎁 OFFERS: ${escapeHTML(item.offer)}</div>
+                <div class="skill-detail tag-want">🔍 WANTS: ${escapeHTML(item.want)}</div>
+                <div class="skill-detail">📞 <b>Contact:</b> ${escapeHTML(item.contact)}</div>
+                <span class="category-badge">${escapeHTML(item.category)}</span>
+                <br>
+                <button class="btn btn-primary" onclick="openSwapModal('${escapeHTML(item.name)}', '${escapeHTML(item.offer)}')">🤝 Request Swap</button>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Dynamic search and filter logic
+    function filterSkills() {
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        const selectedCategory = document.getElementById('categoryFilter').value;
+
+        const filtered = skillsData.filter(item => {
+            const matchesSearch = item.name.toLowerCase().includes(searchText) ||
+                                item.offer.toLowerCase().includes(searchText) ||
+                                item.want.toLowerCase().includes(searchText) ||
+                                item.location.toLowerCase().includes(searchText);
+
+            const matchesCategory = (selectedCategory === 'ALL') || (item.category === selectedCategory);
+
+            return matchesSearch && matchesCategory;
+        });
+
+        renderSkills(filtered);
+    }
+
+    // Reset filtering options
+    function resetFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('categoryFilter').value = 'ALL';
+        renderSkills(skillsData);
+    }
+
+    // Add new skill card from HTML form
+    function addNewSkill(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('memberName').value.trim();
+        const location = document.getElementById('memberLocation').value.trim();
+        const category = document.getElementById('skillCategory').value;
+        const offer = document.getElementById('skillOffer').value.trim();
+        const want = document.getElementById('skillWant').value.trim();
+        const contact = document.getElementById('contactInfo').value.trim();
+
+        if (!name || !offer || !want) {
+            return;
+        }
+
+        const newEntry = {
+            id: Date.now(),
+            name: name,
+            location: location,
+            category: category,
+            offer: offer,
+            want: want,
+            contact: contact
+        };
+
+        // Add to array
+        skillsData.unshift(newEntry);
+        
+        // Refresh display
+        resetFilters();
+        updateStats();
+
+        // Reset inputs
+        document.getElementById('addSkillForm').reset();
+
+        // Award 1 free bonus time-bank credit for posting
+        userBalance += 1;
+        document.getElementById('creditBalance').innerText = userBalance + " Hours";
+
+        // Feedback notification box
+        showNotification("Success! Your skill offer has been posted to the board. (+1 Hour Credit Earned!)");
+    }
+
+    // Modal popup logic
+    function openSwapModal(neighborName, skillOffer) {
+        activeSwapTarget = neighborName;
+        document.getElementById('modalRecipientText').innerText = `Propose a skill swap with ${neighborName} (Offering: ${skillOffer})`;
+        document.getElementById('modalMessage').value = '';
+        document.getElementById('swapModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('swapModal').style.display = 'none';
+        activeSwapTarget = null;
+    }
+
+    function confirmSwapRequest() {
+        if (!activeSwapTarget) return;
+
+        // Perform time credit deduction if balance available
+        if (userBalance > 0) {
+            userBalance -= 1;
+            totalSwapsCompleted += 1;
+            document.getElementById('creditBalance').innerText = userBalance + " Hours";
+            updateStats();
+
+            showNotification(`Swap request successfully sent to ${activeSwapTarget}! 1 Hour credit held in escrow.`);
+        } else {
+            showNotification(`Swap request sent to ${activeSwapTarget}! Note: Your balance is 0 hours, consider posting an offer!`);
+        }
+
+        closeModal();
+    }
+
+    // Utility notification box (replacing standard alert)
+    function showNotification(msg) {
+        const notif = document.createElement('div');
+        notif.style.position = 'fixed';
+        notif.style.bottom = '20px';
+        notif.style.right = '20px';
+        notif.style.backgroundColor = '#003366';
+        notif.style.color = '#ffffff';
+        notif.style.padding = '12px 18px';
+        notif.style.border = '2px solid #001122';
+        notif.style.boxShadow = '3px 3px 6px rgba(0,0,0,0.4)';
+        notif.style.zIndex = '2000';
+        notif.style.fontSize = '13px';
+        notif.innerText = msg;
+
+        document.body.appendChild(notif);
+
+        setTimeout(() => {
+            if (notif.parentNode) {
+                notif.parentNode.removeChild(notif);
+            }
+        }, 4000);
+    }
+
+    // Update statistics display table
+    function updateStats() {
+        document.getElementById('statMembers').innerText = skillsData.length + " Neighbors";
+        document.getElementById('statSwaps').innerText = totalSwapsCompleted + " Swaps";
+    }
+
+    // Helper function to sanitize user inputs for simple dynamic injection
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+</script>
+
+</body>
+</html>
